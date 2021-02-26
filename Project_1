@@ -1,0 +1,52 @@
+'''
+Goal of the exercise is to create a dice simulator. The only twist is that instead of a random 1-6 number the result has to be shown 
+as text graphical representation of a dice.
+
+'''
+
+
+import random
+
+
+
+def start():
+
+    key = input("Press y to roll a dice:  ")
+    key = key.lower()
+
+    if key=="y":
+        dice_roll()
+    else:
+        print("You have to press y ")
+   
+    
+
+
+def dice_roll():
+    output = random.randrange(1,7)
+    
+    if output == 1:
+        d1,d2,d3,d4,d5,d6,d7 = " "," "," ","o"," "," "," " 
+    if output == 2:
+        d1,d2,d3,d4,d5,d6,d7 = " "," ","o"," ","o"," "," "
+    if output == 3:
+        d1,d2,d3,d4,d5,d6,d7 = "o"," "," ","o"," "," ","o" 
+    if output == 4:
+        d1,d2,d3,d4,d5,d6,d7 = "o","o"," "," "," ","o","o" 
+    if output == 5:
+        d1,d2,d3,d4,d5,d6,d7 = "o","o"," ","o"," ","o","o" 
+    if output == 6:
+        d1,d2,d3,d4,d5,d6,d7 = "o","o","o"," ","o","o","o" 
+    
+    dice = '''
+[ {}   {} ]
+| {} {} {} |
+[ {}   {} ]
+'''.format(d1,d2,d3,d4,d5,d6,d7)
+
+    print(dice)
+
+    
+
+
+start()
