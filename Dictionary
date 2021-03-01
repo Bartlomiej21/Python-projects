@@ -1,0 +1,83 @@
+'''
+To 2 wersja programu - działająca.
+1 wersja oparta na .remove() niestety wyrzucała nie te elementy. Zmieniłem metodę na wykorzystanie listy tymczasowej i append()
+
+Z testów jak na razie program działa
+
+
+Program z oczywistych względów nie będzie działał nigdzie indziej - potrzebny jest plik json ze słownikiem
+
+'''
+
+
+import os
+import json
+
+
+cwd = os.getcwd()
+
+data = json.load(open("data.json"))
+
+#print(data["smog"])   # ['Air pollution consisting of smoke and fog.']   # przykładowe zapytanie
+
+#word = input("Search for a word: ")   # można ustawić, by użytkownik wpisywał frazę (żeby było szybciej, robiłem to ręcznie)
+#word = word.lower()
+
+
+def translate(search_word):
+    if search_word in data:
+        return data[search_word]
+    else:
+        
+        n=3
+        wyniki = []
+        wyniki_now = []
+        for i in data:
+            if i[0] == search_word[0] and i[1] == search_word[1] and i[2] == search_word[2] :  # zakładamy, że trzeba dać przynajmniej 3 litery (dla uproszczenia i szybszych obliczeń)
+                wyniki.append(i)
+        print(wyniki)
+
+       
+
+        while n<len(search_word) and len(wyniki)>1:   # 
+            wyniki_now = wyniki   
+            wyniki=[]
+            for i in wyniki_now:    # wcześniej miałem konstrukcję opartą na remove, teraz próbuję na 2 listy i append (remove wyrzucało czasem złe elementy)
+                try:
+                    if i[n] == search_word[n]:
+                        wyniki.append(i)
+                except:
+                    pass   # wyrzucamy słowa, dla których nie zgadza się licznik (prawdopodobonie mają mniejszą liczbę liter niż szukana fraza)
+            
+            wyniki_now = []
+            #print(wyniki)
+            #print(n)    
+            n+=1   # n będzie o 1 za duże po pętli
+
+        #if wyniki == []:
+            #print("Proszę powtórzyć zapytanie. Nie znaleziono wyników.")   
+            #break    
+        
+        try:
+            print("Czy chodziło Ci o "+wyniki[0]+"?")
+            key2=input("y/n   ")
+            if key2=="y":
+                print("Dziękujemy za skorzystanie ze słownika")
+            elif key2=="n":
+                print("Być może szukane słowo znajduje się na poniższej liście?")
+                print(wyniki)
+            else:
+                print("Zapraszamy do ponownego skorzystania")
+        
+        except:
+            print("Proszę powtórzyć zapytanie. Nie znaleziono wyników.") 
+            
+
+
+
+
+
+result = translate("supermark")   # dla przyśpieszenia tutaj wpisywać ręcznie frazy
+#print(result)
+
+#translate("supermarket")
