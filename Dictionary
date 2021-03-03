@@ -4,23 +4,23 @@ To 2 wersja programu - działająca.
 
 Z testów jak na razie program działa
 
-
-Program z oczywistych względów nie będzie działał nigdzie indziej - potrzebny jest plik json ze słownikiem
-
 '''
 
 
 import os
 import json
+import math
+from difflib import get_close_matches
+
 
 
 cwd = os.getcwd()
 
 data = json.load(open("data.json"))
 
-#print(data["smog"])   # ['Air pollution consisting of smoke and fog.']   # przykładowe zapytanie
+#print(data["smog"])   # ['Air pollution consisting of smoke and fog.']
 
-#word = input("Search for a word: ")   # można ustawić, by użytkownik wpisywał frazę (żeby było szybciej, robiłem to ręcznie)
+#word = input("Search for a word: ")
 #word = word.lower()
 
 
@@ -57,6 +57,8 @@ def translate(search_word):
         #if wyniki == []:
             #print("Proszę powtórzyć zapytanie. Nie znaleziono wyników.")   
             #break    
+
+        
         
         try:
             print("Czy chodziło Ci o "+wyniki[0]+"?")
@@ -64,8 +66,19 @@ def translate(search_word):
             if key2=="y":
                 print("Dziękujemy za skorzystanie ze słownika")
             elif key2=="n":
-                print("Być może szukane słowo znajduje się na poniższej liście?")
-                print(wyniki)
+                try:
+                    # this is not probably the best construction possible
+                    gcm = data[get_close_matches(search_word,data.keys())[0]]
+                    #key_list = list(data.keys())
+                    #val_list = list(data.values())
+                    #position = val_list.index(gcm)
+                    #print(key_list[position])
+                    print(gcm)
+
+
+                except:
+                    print("Być może szukane słowo znajduje się na poniższej liście?")
+                    print(wyniki)
             else:
                 print("Zapraszamy do ponownego skorzystania")
         
@@ -77,7 +90,7 @@ def translate(search_word):
 
 
 
-result = translate("supermark")   # dla przyśpieszenia tutaj wpisywać ręcznie frazy
+result = translate("superm")   # dla przyśpieszenia tutaj wpisywać ręcznie frazy
 #print(result)
 
 #translate("supermarket")
