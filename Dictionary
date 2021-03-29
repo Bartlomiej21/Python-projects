@@ -91,6 +91,6 @@ def translate(search_word):
 
 
 result = translate("superm")   # dla przyśpieszenia tutaj wpisywać ręcznie frazy
-#print(result)
+print(result)
 
 #translate("supermarket")
