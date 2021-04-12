@@ -1,0 +1,107 @@
+password = "bitcoin"   # 7 letters
+secret = [i for i in password]
+pass_temp = []
+skucha=0
+
+print(secret)   #['b', 'i', 't', 'c', 'o', 'i', 'n']
+
+for i in password:
+    pass_temp.append("_")
+
+print(pass_temp)
+
+# hangmanpics copied from chrishorton github
+
+HANGMANPICS = ['''
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ /    |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ / \  |
+      |
+=========''']
+
+
+
+
+def list_to_str(s):
+    
+    output = " ".join([str(elem) for elem in s])
+    return output
+
+
+
+def hangman(pas):   
+    inp = input("Try to guess a password  ")
+    inp.lower()
+    guess=0
+    global skucha
+    #global HANGMANPICS
+    for ind,i in enumerate(pas):
+        # ind - 0  obj - b
+        if i==inp:
+            pass_temp[ind]=inp
+            guess+=1
+    if guess==0:
+        skucha+=1
+        
+
+    if "_" not in pass_temp:
+        print("Gratulacje! Jesteś zwycięzcą")
+    elif skucha==6:
+        print(HANGMANPICS[skucha])
+        print("Koniec gry. Niestety, tym razem nie wyszło")
+    else:
+        
+        print(HANGMANPICS[skucha])
+        print('Pomyliłeś się '+str(skucha)+'/6 razy.')
+        print(list_to_str(pass_temp))
+        hangman(pas)
+
+
+
+
+
+hangman(secret)
