@@ -1,4 +1,5 @@
 # pierwsza faza programu - drukuje poprawnie. Następnie trzeba wprowadzić input (X albo O), a potem ruchy komputera i zakończenia programu
+# druga faza - podstawowa funkcjonalność. Brakuje ruchów komputera. Zrobiłem wstępny szkic algorytmu ruchów AI 
 
 '''
 print(''
@@ -18,10 +19,13 @@ print(''
 numbers = [i for i in range(1,10)]
 print(numbers)
 
-ttt = [" "," "," "," "," "," "," "," "," "]
+ttt = ["1","2","3","4","5","6","7","8","9"]
+licznik_gry = 0
 
+# funkcja pokazująca pole gry
+def drukuj(ttt):
 
-pole = '''
+    pole = '''
 
  {} | {} | {}
 -----------
@@ -30,8 +34,56 @@ pole = '''
  {} | {} | {}
 
 '''.format(*ttt)
+    print(pole)
+
+# funkcja wprowadzania danych przez użytkownika
+def wybor():
+    global z 
+    drukuj(ttt)
+    z = str(input("Proszę wybrać pole 1-9:  "))
+        
+    if z in ttt and z!="X" and z!="O":
+        return z  
+    else:
+        print("Niewłaściwe dane. Wybierz jeszcze raz.")  
+        wybor()
 
 
-#format(1,2,3,4,5,6,7,8,9)
 
-print(pole)
+# funkcja główna gry
+def main_game():
+    #global ttt
+    global licznik_gry
+    
+    while licznik_gry!=9:
+        wybor()
+        for count,ele in enumerate(ttt):
+            if ele==z:
+                ttt[count]="X"
+                licznik_gry+=1
+    
+        # tutaj ruchy kompa, albo może funkcja która to robi na pętli 
+    
+
+
+        drukuj(ttt)
+    
+    if licznik_gry == 9:
+            print("Koniec gry!")
+    
+    # dodatkowe warunki, w zalezności kto wygrał
+        
+
+
+
+main_game()
+
+# lista pól, po których można osiągnąć 3 kółka w linii
+ruchy = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
+
+1. algo sprawdza, czy ma 2 kółka na linii, Jeżeli ma, instant 3 kółko i win 
+2. algo sprawdza, czy gracz ma 2 krzyżyki na linii. Jeżeli ma, zawsze w miejsu 3 krzyżyka kółko musi postawić
+3. algo stara się zrobic 2 kólko, najlepiej na linii, gdzie nie ma krzyżyka 
+4. jeżeli licznik gry mały (pierwszy ruch), komp robi ruch, by zblokować gracza i miesc potencjal na 3 kolka
+
+pytanie: CZy algo powinno priorytetyzować linie skośne?
