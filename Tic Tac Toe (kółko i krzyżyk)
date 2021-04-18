@@ -1,6 +1,8 @@
 # pierwsza faza programu - drukuje poprawnie. Następnie trzeba wprowadzić input (X albo O), a potem ruchy komputera i zakończenia programu
 # druga faza - podstawowa funkcjonalność. Brakuje ruchów komputera. Zrobiłem wstępny szkic algorytmu ruchów AI 
 # 3 - dodałem wstępne warunki zakończenia gry (nie działają) Prawdopodobnie licznik nie działa. dodałem jeden z algo AI - działa, ale być może będzie wymagał poprawek
+# 4 - podstawowe pętle zdają się dobrze działąć (przynajmniej na razie). Jeszcze 3 i algorytm będzie w pełni funkcjonalny. Potem zostaną poprawki. Na razie z warunków zakończenia 
+      działa 9 ruchów. Będę musiał to poprawić, ale to nie priorytet. Licznik ruchów poprawiony, na razie chodzi dobrze.
 
 '''
 print(''
@@ -24,7 +26,7 @@ ttt = ["1","2","3","4","5","6","7","8","9"]
 
 ruchy = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 licznik_gry = 0
-gracz_zaczyna = False
+gracz_zaczyna = True
 
 # funkcja pokazująca pole gry
 def drukuj(ttt):
@@ -54,78 +56,12 @@ def wybor():
         wybor()
 
 
-
-# funkcja główna gry
-def main_game():
-    #global ttt
-    global licznik_gry
-    global gracz_zaczyna
-    global ruchy
-    licznik = 0
-    ruch_kompa = False
-    
-    if licznik_gry<1 and gracz_zaczyna==False:
-        ttt[4]="O"
-        licznik_gry+=1
-        drukuj(ttt)
-
-    while licznik_gry!=9:
-        print(licznik_gry)
-       
-
-        wybor()
-        licznik_gry+=1
-
-        for count,ele in enumerate(ttt):
-            if ele==z:
-                ttt[count]="X"
-                
-        
-    
-       
-        licznik_x = 0
-        licznik_o = 0
-        
-        # pętla blokująca dwa krzyżyki (zawsze)
-        
-        while licznik<len(ruchy) and ruch_kompa==False:
-            for i in ruchy:
-                
-            
-                for j in i:
-                
-                    if ttt[j-1]=="X":
-                        licznik_x+=1
-                    
-                    if licznik_x>1:
-                        for k in i:
-
-                            if ttt[k-1]!="X":
-                                ttt[k-1]="O"
-                                ruch_kompa=True
-                                  
-                                break
-                                
-                licznik_x=0
-            licznik+=1
-
-        licznik=0
-
-        # pod koniec ruchów kompa będzię zwiększenie licznika ruchów gry o 1. Zerujemy też fakt samego ruchu
-        
-        ruch_kompa=False
-        licznik_gry+=1
-
-
-        #drukuj(ttt)
-    
-        
-
-
+#funkcja sprawdzająca zwycięstwo
+def sprawdzenie():
     if licznik_gry == 9:
             print("Koniec gry!")
             return "Koniec gry!"
-    
+
 
     for i in ruchy:
         licznik_x=0
@@ -152,9 +88,137 @@ def main_game():
             
     licznik_x=0
     licznik_o=0      
-        
-            
+
+
+
+# funkcja główna gry
+def main_game():
+    #global ttt
+    global licznik_gry
+    global gracz_zaczyna
+    global ruchy
+    licznik = 0
+    ruch_kompa = False
     
+    if licznik_gry<1 and gracz_zaczyna==False:
+        ttt[4]="O"
+        licznik_gry+=1
+        drukuj(ttt)
+
+    while licznik_gry!=9:
+        print(licznik_gry)
+       
+
+        wybor()
+        licznik_gry+=1
+        print("Zwiększam licznik po wyborze gracza")
+
+        sprawdzenie()
+
+        licznik_x = 0
+        licznik_o = 0
+        ruch_kompa=False
+
+        for count,ele in enumerate(ttt):
+            if ele==z:
+                ttt[count]="X"
+                
+        
+    
+       
+        
+        
+# pętla stawiająca trzecie kółko (wygrana komputera)
+        while licznik<len(ruchy) and ruch_kompa==False:
+            for i in ruchy:
+                if ruch_kompa==True:
+                    break
+
+                for j in i:
+                    if ttt[j-1]=="O":
+                        licznik_o+=1
+
+                if licznik_o>1:
+                    for k in i:
+                        if ttt[k-1]!="O" and ttt[k-1]!="X":
+                        #if ttt[k-1] in numbers==True:   # nie działa, gdyż ttt to lista str, a numbers int
+                            ttt[k-1]="O"
+                            ruch_kompa=True
+                licznik_o=0
+            
+            licznik+=1
+                
+
+        licznik=0
+
+
+# pętla blokująca dwa krzyżyki
+        while licznik<len(ruchy) and ruch_kompa==False:
+            for i in ruchy:
+                if ruch_kompa==True:
+                    break
+            
+                for j in i:
+                
+                    if ttt[j-1]=="X":
+                        licznik_x+=1
+                    
+                if licznik_x>1:
+                    for k in i:
+
+                        if ttt[k-1]!="X" and ttt[k-1]!="O":
+                        #if ttt[k-1] in numbers==True:   
+                            ttt[k-1]="O"
+                            ruch_kompa=True
+                                  
+                            
+                                
+                licznik_x=0
+            licznik+=1
+
+        licznik=0
+        
+# pętla robiąca drugie kółko   (w tym miejscu kończę pracę na dzisiaj!!!)
+        while licznik<len(ruchy) and ruch_kompa==False:
+            for i in ruchy:
+                if ruch_kompa==True:
+                    break
+            
+                for j in i:
+                
+                    if ttt[j-1]=="O":
+                        licznik_o+=1
+                    if ttt[j-1]=="X":
+                        licznik_x+=1
+                    
+                if licznik_o>1 and licznik_x=0:
+                    for k in i:
+
+                        if ttt[k-1]!="X" and ttt[k-1]!="O":
+                        #if ttt[k-1] in numbers==True:   
+                            ttt[k-1]="O"
+                            ruch_kompa=True
+
+        licznik=0
+
+
+
+
+        # pod koniec ruchów kompa będzię zwiększenie licznika ruchów gry o 1. Zerujemy też fakt samego ruchu
+        
+        if ruch_kompa==True:
+            licznik_gry+=1
+            print("zwiększam licznik po ruchu kompa")
+            ruch_kompa=False
+
+
+
+        sprawdzenie()
+        
+    
+    
+
+
     
         
 
@@ -162,14 +226,15 @@ def main_game():
 
 main_game()
 
-# lista pól, po których można osiągnąć 3 kółka w linii
 
 
 
 '''
 1. algo sprawdza, czy ma 2 kółka na linii, Jeżeli ma, instant 3 kółko i win 
 2. algo sprawdza, czy gracz ma 2 krzyżyki na linii. Jeżeli ma, zawsze w miejsu 3 krzyżyka kółko musi postawić
-3. algo stara się zrobic 2 kólko, najlepiej na linii, gdzie nie ma krzyżyka 
-4. jeżeli licznik gry mały (pierwszy ruch), komp robi ruch, by zblokować gracza i miesc potencjal na 3 kolka
+3. algo stara się zrobic 2 kólko na linii, gdzie nie ma krzyżyka
+4. algo robi kolko na linii, gdzie nie ma krzyżyka
+5. jeżeli nie ma takiej opcji, algo blokuje krzyżyki kompa  
+6. jeżeli komp zaczyna, zrobi ruch na środku
 
 '''
