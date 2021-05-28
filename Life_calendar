@@ -1,0 +1,33 @@
+# just a simple graphic representation of one's life span using simple characters for every week before 65 years old
+
+import datetime
+import math
+
+today = datetime.date.today()
+
+# dates are changed
+birthday = datetime.date(1993,5,18)   
+retirement = datetime.date(2058,5,18)  
+
+#print(str(now) +'\n'+str(birthday))
+
+# różnica między dniem obecnym a urodzinami
+diff = (today-birthday).days - 3  # odejmujemy 3 pierwsze dni życia, bo nie był to pełny tydzień (od piątku do niedzieli)
+weeks_life = math.ceil((retirement-birthday).days/7)   # math.ceil is just to add 1 week to life (the very first one)
+# weeks_life = 3392
+
+weeks = math.floor(diff/7)+1  # how many weeks of my life already passed
+i=0  # licznik
+
+
+procent = str(round(weeks/weeks_life * 100,2))   
+print("You used "+procent+' percent of your life. Keep working.\n')
+
+
+while i<=weeks_life:
+    if i<weeks:
+        print('X',end="")
+    else:
+        print('O',end="")
+    i+=1
+
