@@ -1,1 +1,87 @@
 # projekt 5 będzie wymagał nauki kilku modułów do Pythona
+# 2 z 3 części podstawowego programu zrobione. 3 to import z pliku - powinno pójść łatwiej, niż z piewszymi dwoma
+
+# imports
+import numpy as np
+import pandas as pd
+import plotly as pl
+import plotly.offline as po
+import cufflinks as cf
+import string
+
+
+po.init_notebook_mode(connected=True)
+cf.go_offline()
+
+
+# main input function
+def createdata(data):
+    if(data ==1):
+        dalej = False
+        while dalej == False:
+            try:
+                x = int(input('Please write a number of rows (1-100): '))
+                y = int(input('Please write a number of columns (1-5): '))
+                dalej=True
+            except:
+                print('Please write a correct number.')
+                dalej=False
+            
+            if dalej:
+                if x>0 and x<101 and y>0 and y<6:
+                    pass
+                else:
+                    dalej=False
+                   
+        col = [string.ascii_uppercase[i] for i in range (0,y)]
+        print(col)
+        df=pd.DataFrame(np.random.rand(x,y), columns = col)
+        print(df)
+    
+    
+    if(data ==2):
+        col = [string.ascii_uppercase[i] for i in range (0,3)]
+        dalej = False
+        
+        while dalej == False:
+        
+            x = input('Please write 9 numbers separated by comma: ')
+            x2 = list(x.split(','))
+            
+            for i in x2:
+                if i=='':
+                    i='0'
+                    
+            try:
+                x2= [int(i) for i in x2]
+                
+            except:
+                print("Please write only numbers!")
+
+            print(x2)
+            dalej = True
+            
+            for i in x2:
+                if type(i)!=int:
+                    dalej=False
+        
+                else:
+                    pass
+
+        
+        # at this point we should have a list of integers
+
+        if len(x2)>9:
+            x2 = x2[0:9]
+        if len(x2)<9:
+            while len(x2)!=9:
+                x2.append(0)
+
+        dalej=False
+        
+        print(x2)
+        
+        x2 = np.array(x2).reshape(3,3)
+        
+        df=pd.DataFrame(x2, columns = col)
+        print(df)
