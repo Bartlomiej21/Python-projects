@@ -1,6 +1,5 @@
 # work in progress!
-
-# funkcja zajmująca się tworzeniem/pobieraniem danych z pliku działa poprawnie
+# need to finish plotter2 and maybe some fixes
 
 # imports
 import numpy as np
@@ -71,7 +70,8 @@ def createdata(data):
 
         
         # at this point we should have a list of integers
-
+        
+        # below code is to create a list consisting of 9 values (since df will be 3x3)
         if len(x2)>9:
             x2 = x2[0:9]
         if len(x2)<9:
@@ -107,4 +107,176 @@ def createdata(data):
         
         
  #################################################################################################
+ # plotter functions (complete, than specific)
+ 
+ def plotter(plot):
+    if plot==1:
+        finalplot=df1.iplot(kind='scatter')
+    elif plot==2:
+        finalplot=df1.iplot(kind='scatter',mode='markers',symbol='x',colorscale='paired')
+    elif plot==3:
+        finalplot = df1.iplot(kind='bar')
+    elif plot==4:
+        finalplot = df1.iplot(kind='hist')
+    elif plot==5:
+        finalplot = df1.iplot(kind='box')
+    elif plot==6:
+        try:
+            finalplot = df1.iplot(kind='surface')
+        except:
+            print("Not supported with this data")
+    else:
+        print("Something did go wrong. Please check your input again.")
+        
+# plotter(7)  # this is for quick testing
+
+
+
+# for now plotter 2 is unfinished and just a copy of plotter1
+def plotter2(plot):
+    if plot==1:
+        finalplot=df1.iplot(kind='scatter')
+    elif plot==2:
+        finalplot=df1.iplot(kind='scatter',mode='markers',symbol='x',colorscale='paired')
+    elif plot==3:
+        finalplot = df1.iplot(kind='bar')
+    elif plot==4:
+        finalplot = df1.iplot(kind='hist')
+    elif plot==5:
+        finalplot = df1.iplot(kind='box')
+    elif plot==6:
+        try:
+            finalplot = df1.iplot(kind='surface')
+        except:
+            print("Not supported with this data")
+    elif plot==7:
+        pass
+    
+    else:
+        print("Something did go wrong. Please check your input again.") 
+        
+##########################################################################
+# choice of plotter type function
+
+def main(cho2):
+    if cho2==1:
+        print("Select the type of plot by entering 1 to 6: ")
+        print('''1.Line plot
+2.Scatter plot
+3.Bar plot
+4.Histogram
+5.Box plot
+6.Surface plot''')
+        
+       
+        dalej=False
+        
+        while dalej==False:
+            
+            plot = input()
+            try:
+                plot = int(plot)
+                if plot<1 or plot>6:
+                    print("Choose 1-6")
+                    
+                else:
+                    dalej=True
+                    print("OK")
+            except:
+                print("You have to choose again")
+                
+        # after the loop we should have 1-6 int number
+        
+        output = plotter(plot)  #this is for future function
+        
+    elif cho2==2:
+        print("Select the type of plot by entering 1 to 7: ")
+        print('''1.Line plot
+2.Scatter plot
+3.Bar plot
+4.Histogram
+5.Box plot
+6.Surface plot
+7.Bubble plot''')
+        
+        dalej=False
+        
+        while dalej==False:
+            
+            plot = input()
+            try:
+                plot = int(plot)
+                if plot<1 or plot>7:
+                    print("Choose 1-7")
+                    
+                else:
+                    dalej=True
+                    print("OK")
+            except:
+                print("You have to choose again")
+        
+        output = plotter2(plot)
+
+#for testing
+#main(2)
+#df1.head()
+
+######################################################
+# this is actual start of a program
+
+print('Please select the type of data you need to plot: 1, 2 or 3.')
+print('1. Random data with x rows and y columns (max 100 and 5, respectively).')
+print('2. Customize dataframe with 3 columns and 3 rows.')
+print('3. Input data from a file.')
+
+def start1():
+    
+    try:
+        cho1 = int(input())
+    except:
+        print('Bad input. Please write a number between 1 and 3.')
+        start1()
+
+    if cho1>0 and cho1<4:
+        df1= createdata(cho1) 
+    else:
+        print('Choose number between 1-3!')
+        start1()
+    
+    
+    
+  
+start1()    # a starting point of my program
+
+# sample csv file names if choice 3 is selected
+# 188.iris.csv
+# 187.tips.csv
+
+print('Check your columns before plotting.')
+df1.head(10)
+
+
+print("What kind of plot do you need: a complete data plot, or specific columns?")
+
+cho2=0
+while cho2==0:
+    cho2=input('Please enter 1(complete) or 2(specific): ')
+    try:
+        cho2 = int(cho2)
+        if cho2==1 or cho2==2:
+            pass
+
+        else:
+            cho2=0
+            print("Wrong number.")
+    except:
+        print('Please enter 1 or 2!')
+        cho2=0
+
+#main(cho2)   # for testing
+    
+
+
+
+ 
         
