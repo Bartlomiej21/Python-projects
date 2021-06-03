@@ -1,5 +1,5 @@
-# work in progress!
-# need to finish plotter2 and maybe some fixes
+# This program creates/loads a dataframe, then plots data in a way specified by user
+
 
 # imports
 import numpy as np
@@ -14,8 +14,12 @@ po.init_notebook_mode(connected=True)
 cf.go_offline()
 
 ####################################################################################
-# main input function
-def createdata(data):
+def createdata(data):  
+    # this function is to create a dataframe, either from file, random or by user
+    # data parameter above is the input by user, chosen at start1 function (actual start of program)
+    
+    global df1  # this will be my return dataframe
+    
     if(data ==1):
         dalej = False
         while dalej == False:
@@ -33,10 +37,10 @@ def createdata(data):
                 else:
                     dalej=False
                    
-        col = [string.ascii_uppercase[i] for i in range (0,y)]
+        col = [string.ascii_uppercase[i] for i in range (0,y)] # just simple ['A','B', etc.] column names
         print(col)
-        df=pd.DataFrame(np.random.rand(x,y), columns = col)
-        print(df)
+        df1=pd.DataFrame(np.random.rand(x,y), columns = col)
+        print(df1)
     
     
     elif(data ==2):
@@ -70,8 +74,7 @@ def createdata(data):
 
         
         # at this point we should have a list of integers
-        
-        # below code is to create a list consisting of 9 values (since df will be 3x3)
+
         if len(x2)>9:
             x2 = x2[0:9]
         if len(x2)<9:
@@ -84,17 +87,17 @@ def createdata(data):
         
         x2 = np.array(x2).reshape(3,3)
         
-        df=pd.DataFrame(x2, columns = col)
-        print(df)
+        df1=pd.DataFrame(x2, columns = col)
+        print(df1)
         
     elif (data==3):
         file = input('Enter the file name: \n')
         # 188.iris.csv
-        # 187.tips.csv
+        # 187.tips.csv  
         
         try:
-            df = pd.read_csv(file)
-            print(df.head(10))
+            df1 = pd.read_csv(file)
+            print("OK file")
         except:
             print('There is no such file!')
             createdata(3)
@@ -107,9 +110,8 @@ def createdata(data):
         
         
  #################################################################################################
- # plotter functions (complete, than specific)
- 
- def plotter(plot):
+ # function for a complete dataframe plot
+def plotter(plot):
     if plot==1:
         finalplot=df1.iplot(kind='scatter')
     elif plot==2:
@@ -127,37 +129,104 @@ def createdata(data):
             print("Not supported with this data")
     else:
         print("Something did go wrong. Please check your input again.")
-        
+    
+
 # plotter(7)  # this is for quick testing
 
+###############
+#plotter2
 
-
-# for now plotter 2 is unfinished and just a copy of plotter1
+# this is for more complicated plots when user want to plot specific columns
 def plotter2(plot):
+    
+    a = len(df1.columns.values) 
+    b = list(df1.columns.values)
+    
+    print("This are the columns: ",b)
+    col_nr = input("How many columns to plot (max {}). ".format(a))
+    
+    
+    # checking whether the input is correct
+    try:
+        col_nr = int(col_nr)
+        if col_nr>0 and col_nr<=a:
+            pass
+        else:
+            print("The number of columns is incorrect. Please try again.")
+            plotter2(plot)
+    
+            
+    except:
+        print("Please insert the correct number!")
+        plotter2(plot)
+    
+    
+    
+    i = 0
+    col = []
+    
+    # user chooses specific columns
+    while i < col_nr:
+        print(b)
+
+        c = input('Which columns to plot? Write column number or type q to finish.')
+        
+        if c=='q' or c=='Q':
+            break
+        else:
+
+            try:
+                c = int(c)
+                if c-1 not in col:
+                    col.append(c-1)
+                    i+=1
+                else:
+                    print("You've already chosen that column.")
+
+            except:
+                print("You need to input only numbers!")
+
+    # if user will quit without choosing any column. Could be overworked differently, this is just to simplify
+    if len(col)==0:
+        col=b[0]
+
+
+    print(col)
+    
+    col_plot = [b[j] for j in col]   #list of columns names chosen by user
+    print(col_plot)
+                
+    # finally, some good plot   
     if plot==1:
-        finalplot=df1.iplot(kind='scatter')
+        finalplot = df1[col_plot].iplot(kind='scatter')
     elif plot==2:
-        finalplot=df1.iplot(kind='scatter',mode='markers',symbol='x',colorscale='paired')
+        finalplot=df1[col_plot].iplot(kind='scatter',mode='markers',symbol='x',colorscale='paired')
     elif plot==3:
-        finalplot = df1.iplot(kind='bar')
+        finalplot = df1[col_plot].iplot(kind='bar')     
     elif plot==4:
-        finalplot = df1.iplot(kind='hist')
+        finalplot = df1[col_plot].iplot(kind='hist')
     elif plot==5:
-        finalplot = df1.iplot(kind='box')
+        finalplot = df1[col_plot].iplot(kind='box')
     elif plot==6:
         try:
-            finalplot = df1.iplot(kind='surface')
+            finalplot = df1[col_plot].iplot(kind='surface')
         except:
-            print("Not supported with this data")
+            print("Not supported with this data or just one column chosen.")
     elif plot==7:
-        pass
+        try:
+            finalplot = df1[col_plot].iplot(kind='bubble')
+        except:
+            print("Not supported with this data or just one column chosen.")
     
     else:
-        print("Something did go wrong. Please check your input again.") 
+        print("Something did go wrong. Please check your input again.")
+       
+
+plotter2(1)  # for quick tests
+
         
 ##########################################################################
-# choice of plotter type function
-
+# function lets user choose plot type
 def main(cho2):
     if cho2==1:
         print("Select the type of plot by entering 1 to 6: ")
@@ -217,18 +286,17 @@ def main(cho2):
         
         output = plotter2(plot)
 
-#for testing
 #main(2)
 #df1.head()
 
-######################################################
-# this is actual start of a program
 
+######################################################
 print('Please select the type of data you need to plot: 1, 2 or 3.')
 print('1. Random data with x rows and y columns (max 100 and 5, respectively).')
 print('2. Customize dataframe with 3 columns and 3 rows.')
 print('3. Input data from a file.')
 
+# starting function. The first step is to create/load data. 
 def start1():
     
     try:
@@ -246,7 +314,8 @@ def start1():
     
     
   
-start1()    # a starting point of my program
+start1()    
+
 
 # sample csv file names if choice 3 is selected
 # 188.iris.csv
@@ -273,7 +342,7 @@ while cho2==0:
         print('Please enter 1 or 2!')
         cho2=0
 
-#main(cho2)   # for testing
+main(cho2)
     
 
 
