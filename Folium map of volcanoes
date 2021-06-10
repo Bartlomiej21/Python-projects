@@ -1,0 +1,25 @@
+# this was done in Jupiter Notebook
+# It's a simple project that uses folium library to get world map and then load volcanoes coordinates from file and mark them on the map
+
+
+import numpy as np
+import pandas as pd
+import folium as fo
+%matplotlib inline
+
+
+map = fo.Map()  # this is basically a quite detailed map of the world
+
+x = fo.FeatureGroup(name="Map of volcanoes")  # this is an overlayer 
+
+volcano = pd.read_csv("239.volcano.csv")   # dataframe. We need volcano longitude,latitude and name
+lat_vo= list(volcano.Latitude)
+lon_vo= list(volcano.Longitude)
+name_vo= list(volcano.Name)
+
+# we need some method to add markers to map
+for lat,lon,name in zip(lat_vo,lon_vo,name_vo):
+  x.add_child(fo.Marker(location=[lat,lon],popup=name,icon=fo.Icon(color='red')))
+  
+map.add_child(x) # add overlay with markers to main map
+
