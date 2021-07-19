@@ -1,5 +1,6 @@
 # this was done in Jupiter Notebook
 # It's a simple project that uses folium library to get world map and then load volcanoes coordinates from file and mark them on the map
+# very easy to use
 
 
 import numpy as np
