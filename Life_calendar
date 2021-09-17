@@ -1,5 +1,6 @@
 # just a simple graphic representation of one's life span using simple characters for every week before 65 years old
 
+
 import datetime
 import math
 
