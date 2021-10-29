@@ -1,5 +1,5 @@
 '''
-To 2 wersja programu - działająca.
+To 2 wersja programu  - działająca.
 1 wersja oparta na .remove() niestety wyrzucała nie te elementy. Zmieniłem metodę na wykorzystanie listy tymczasowej i append()
 
 Z testów jak na razie program działa
